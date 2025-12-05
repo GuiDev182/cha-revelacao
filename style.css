@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, #ffe4f0, #e0f7ff);
+    color: #333;
+}
+
+.container {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    max-width: 480px;
+    width: 90%;
+}
+
+.evento-nome {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    color: #ff69b4;
+}
+
+.evento-subtitulo {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #00bcd4;
+}
+
+.timer {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.time-box {
+    flex: 1;
+    background: linear-gradient(135deg, #ff9acb, #8be3ff);
+    border-radius: 16px;
+    padding: 0.8rem 0.4rem;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.time-box span {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.time-box label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.2rem;
+}
+
+.mensagem-final {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ff4081;
+}
+
+/* Responsivo */
+@media (min-width: 600px) {
+    .evento-nome {
+        font-size: 2.4rem;
+    }
+
+    .evento-subtitulo {
+        font-size: 1.4rem;
+    }
+
+    .time-box span {
+        font-size: 2rem;
+    }
+}
