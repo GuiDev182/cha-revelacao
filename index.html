@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador Chá Revelação</title>
+    <style>
+        :root {
+            --color-primary: #FF6B9D;
+            --color-secondary: #4ECDC4;
+            --color-accent: #FFE66D;
+            --color-bg: #FFF5F7;
+            --color-text: #2C3E50;
+            --color-border: #FFB6D9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFE5EC 0%, #E0F7F6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--color-text);
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        .form-section {
+            background: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-text);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            font-size: 1em;
+            color: var(--color-text);
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #FF5287;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #3DB8AF;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: #E8E8E8;
+            color: var(--color-text);
+        }
+
+        .btn-reset:hover {
+            background: #D0D0D0;
+        }
+
+        .timer-display {
+            background: linear-gradient(135deg, #FFE5EC 0%, #E0F7F6 100%);
+            border: 3px solid var(--color-primary);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .timer-display.active {
+            display: block;
+        }
+
+        .event-info {
+            margin-bottom: 20px;
+        }
+
+        .event-date {
+            color: var(--color-text);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .timer-title {
+            color: var(--color-primary);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .time-unit {
+            background: white;
+            border: 2px solid var(--color-secondary);
+            border-radius: 10px;
+            padding: 20px 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .time-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.8em;
+            color: var(--color-text);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .countdown-message {
+            color: var(--color-secondary);
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .finished {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info-text {
+            color: var(--color-text);
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .time-value {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Chá Revelação</h1>
+        <p class="subtitle">Contagem regressiva para seu grande momento</p>
+
+        <div class="form-section hidden" id="formSection">
+            <div class="form-group">
+                <label for="eventDate">Data do Evento</label>
+                <input type="date" id="eventDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="eventTime">Horário</label>
+                <input type="time" id="eventTime" value="12:00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="eventName">Nome do Evento (opcional)</label>
+                <input type="text" id="eventName" placeholder="Ex: Chá da Rosa e Maria">
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" onclick="startCountdown()">Iniciar Contagem</button>
+            </div>
+            <p class="info-text">Defina a data e hora para começar a contar os dias!</p>
+        </div>
+
+        <div class="timer-display" id="timerDisplay">
+            <div class="event-info">
+                <div class="timer-title" id="displayEventName">Chá Revelação</div>
+                <div class="event-date" id="displayEventDate"></div>
+            </div>
+
+            <div class="countdown-message">Faltam:</div>
+
+            <div class="countdown" id="countdown">
+                <div class="time-unit">
+                    <span class="time-value" id="days">0</span>
+                    <span class="time-label">Dias</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="hours">0</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">0</span>
+                    <span class="time-label">Min</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">0</span>
+                    <span class="time-label">Seg</span>
+                </div>
+            </div>
+
+            <div id="finishedMessage" class="hidden">
+                <div class="finished">🎊 É HOJE! 🎊</div>
+            </div>
+
+            <button class="btn-secondary" onclick="editEvent()">Editar Evento</button>
+        </div>
+
+        <div class="button-group" id="initialButtons">
+            <button class="btn-primary" onclick="showForm()">Criar Contagem</button>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval = null;
+
+        function showForm() {
+            document.getElementById('formSection').classList.remove('hidden');
+            document.getElementById('initialButtons').classList.add('hidden');
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('eventDate').value = today;
+        }
+
+        function startCountdown() {
+            const date = document.getElementById('eventDate').value;
+            const time = document.getElementById('eventTime').value;
+            const name = document.getElementById('eventName').value || 'Chá Revelação';
+
+            if (!date || !time) {
+                alert('Por favor, preencha a data e o horário!');
+                return;
+            }
+
+            localStorage.setItem('eventDate', date);
+            localStorage.setItem('eventTime', time);
+            localStorage.setItem('eventName', name);
+
+            updateCountdown(date, time, name);
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                updateCountdown(date, time, name);
+            }, 1000);
+
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('timerDisplay').classList.add('active');
+            document.getElementById('initialButtons').classList.add('hidden');
+        }
+
+        function updateCountdown(date, time, name) {
+            const eventDateTime = new Date(`${date}T${time}`);
+            const now = new Date();
+
+            document.getElementById('displayEventName').textContent = name;
+            document.getElementById('displayEventDate').textContent = 
+                eventDateTime.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+            const diff = eventDateTime - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').classList.add('hidden');
+                document.getElementById('finishedMessage').classList.remove('hidden');
+                if (countdownInterval) clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            document.getElementById('countdown').classList.remove('hidden');
+            document.getElementById('finishedMessage').classList.add('hidden');
+        }
+
+        function editEvent() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            document.getElementById('formSection').classList.remove('hidden');
+            document.getElementById('timerDisplay').classList.remove('active');
+            document.getElementById('initialButtons').classList.add('hidden');
+        }
+
+        window.addEventListener('load', () => {
+            const savedDate = localStorage.getItem('eventDate');
+            const savedTime = localStorage.getItem('eventTime');
+            const savedName = localStorage.getItem('eventName');
+
+            if (savedDate && savedTime) {
+                document.getElementById('eventDate').value = savedDate;
+                document.getElementById('eventTime').value = savedTime;
+                document.getElementById('eventName').value = savedName || '';
+                startCountdown();
+            } else {
+                document.getElementById('initialButtons').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
